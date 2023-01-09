@@ -31,6 +31,7 @@ fi
 
 
 version="version '$major.$minor.$patch'"
+export BUILD_VERSION="$(version)"
 
 #replace line 8 with the updated app version
 sed -i "8s/.*/$version/" build.gradle

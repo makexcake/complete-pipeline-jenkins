@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 #$1=build.groovy read build.groovy
 #&2=which version to encrease input string major.minor.patch

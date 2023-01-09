@@ -1,4 +1,3 @@
-def buildVersion
 pipeline {
 
     agent any
@@ -24,7 +23,7 @@ pipeline {
                 script {
                     //call version increment script
                     sh './increaseVersion.sh patch'
-                    buildVersion = sh "./readVersion"
+                    sh "./readVersion"
                     //env.BUILD_VERSION = sh './readVersion.sh'
                     //sh "echo ${BUILD_VERSION}"
 

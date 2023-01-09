@@ -27,6 +27,7 @@ pipeline {
                     env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
                     echo "this is the build version: ${BUILD_VERSION}"
                     env.IMAGE_NAME = "makecake/bootcamp-java-mysql:${BUILD_VERSION}"
+                    echo "this is the image name: ${IMAGE_NAME}"
 
                 }   
             }

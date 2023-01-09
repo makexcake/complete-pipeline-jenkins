@@ -28,10 +28,22 @@ pipeline {
                     echo "this is the build version: ${BUILD_VERSION}"
                     env.IMAGE_NAME = "makecake/bootcamp-java-mysql:${BUILD_VERSION}"
                     echo "this is the image name: ${IMAGE_NAME}"
-
                 }   
             }
         }
+        
+
+        //build
+        stage('build') {
+            steps {
+                echo "building and pushing to repo..."     
+
+                script {
+                    sh './gradlew build'
+                }               
+            }
+        }
+
 
         //test
         stage('test') {
@@ -40,12 +52,6 @@ pipeline {
             }
         }
 
-        //build
-        stage('build') {
-            steps {
-                echo "building and pushing to repo..."                    
-            }
-        }
 
         //commit version update in git repo
         stage('commit') {

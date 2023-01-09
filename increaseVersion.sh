@@ -1,16 +1,36 @@
 #!/bin/bash
 
-#$1=build.groovy read build.groovy
-#&2=which version to encrease input string major.minor.patch
+#this script updates app version inside build.groovy app
+#use instructions: $./increaseVersion [major/minor/patch]
 
-#extract relevant line (line 8) to variable
+update=$1 #which version to upgrade
 
-#edit the relevant num
-#if major 
-    #major+1.0.0
-#if minor
-    #major.minor+1.0
-#if patch
-    #major.minor.patch+1
+#extract the major, minor and patch version from build.gradle
+major=$(sed -n 8p build.gradle | awk '{print $2}' | xargs | cut -d . -f 1)
+minor=$(sed -n 8p build.gradle | awk '{print $2}' | xargs | cut -d . -f 2)
+patch=$(sed -n 8p build.gradle | awk '{print $2}' | xargs | cut -d . -f 3)
 
-#insert variable instead of line
+
+if [ $update == "major" ]
+then
+major=$(($major+1))
+minor=0
+patch=0
+fi
+
+if [ $update == "minor" ]
+then
+minor=$(($minor+1))
+patch=0
+fi
+
+if [ $update == "patch" ]
+then
+patch=$(($patch+1))
+fi
+
+
+version="version '$major.$minor.$patch'"
+
+#replace line 8 with the updated app version
+sed -i "8s/.*/$version/" build.gradle

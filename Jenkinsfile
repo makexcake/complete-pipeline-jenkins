@@ -22,8 +22,8 @@ pipeline {
 
                 script {
                     env.BUILD_VERSION = './increaseVersion.sh patch'
+                    sh "echo $BUILD_VERSION"
                 }   
-                echo $BUILD_VERSION
             }
         }
 

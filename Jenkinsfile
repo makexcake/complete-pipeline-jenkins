@@ -1,5 +1,6 @@
+def buildVersion
 pipeline {
-    def buildVersion
+
     agent any
     tools {
         //NOTE: must have node plugin installed

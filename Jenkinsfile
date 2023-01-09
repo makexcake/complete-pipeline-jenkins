@@ -21,7 +21,7 @@ pipeline {
                 echo "increasing version..."
 
                 script {
-                    sh "./increaseVersion patch"
+                    sh "./increaseVersion.sh patch"
                 }
                 
             }

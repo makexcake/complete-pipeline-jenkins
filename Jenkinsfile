@@ -22,8 +22,7 @@ pipeline {
 
                 script {
                     sh "./increaseVersion.sh patch"
-                }
-                
+                }                
             }
         }
 

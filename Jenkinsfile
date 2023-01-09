@@ -21,8 +21,8 @@ pipeline {
                 echo "increasing version..."
 
                 script {
-                    env.BUILD_VERSION = './increaseVersion.sh patch'
-                    sh "echo $BUILD_VERSION"
+                    sh './increaseVersion.sh patch'
+                    sh 'sed -n 8p build.gradle | awk '{print $2}' | xargs '
                 }   
             }
         }

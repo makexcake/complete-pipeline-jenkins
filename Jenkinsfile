@@ -19,6 +19,10 @@ pipeline {
         stage('version increment') {
             steps {
                 echo "increasing version..."
+
+                script {
+                    sh "./increaseVersion patch"
+                }
                 
             }
         }

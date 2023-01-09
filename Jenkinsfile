@@ -25,10 +25,8 @@ pipeline {
                     sh './increaseVersion.sh patch'
                     //sh './readVersion.sh'
                     env.BUILD_VERSION = sh "cat version.txt"
-                    env.IMAGE_NAME = "makecake/bootcamp-java-mysql:${BUILD_VERSION}"
-                }   
 
-                echo "this is the image name ${IMAGE_NAME}"
+                }   
             }
         }
 

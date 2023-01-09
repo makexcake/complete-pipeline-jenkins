@@ -49,6 +49,13 @@ pipeline {
             }
         }
 
+        //build image and push to repo
+        stage('push') {
+            steps {
+                echo "pushing to ecr"
+            }
+        }
+
 
         //commit version update in git repo
         stage('commit') {

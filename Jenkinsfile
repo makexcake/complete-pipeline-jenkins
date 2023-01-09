@@ -23,7 +23,7 @@ pipeline {
                 script {
                     //call version increment script
                     sh './increaseVersion.sh patch'
-                    sh './readVersion.sh'
+                    env.BUILD_VERSION = sh './readVersion.sh'
                 }   
             }
         }

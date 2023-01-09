@@ -24,7 +24,7 @@ pipeline {
                 script {
                     //call version increment script
                     sh './increaseVersion.sh patch'
-                    buildVersion = sh './readVersion'
+                    buildVersion = sh "./readVersion"
                     //env.BUILD_VERSION = sh './readVersion.sh'
                     //sh "echo ${BUILD_VERSION}"
 

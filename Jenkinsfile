@@ -22,7 +22,9 @@ pipeline {
 
                 script {
                     sh "./increaseVersion.sh patch"
-                }                
+                    env.BUILD_VERSION = $(sed -n 8p build.gradle | awk '{print $2}' | xargs)
+                }   
+                echo ${BUILD_VERSION}             
             }
         }
 

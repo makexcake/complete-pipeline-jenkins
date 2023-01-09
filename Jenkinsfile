@@ -21,13 +21,10 @@ pipeline {
                 echo "increasing version..."
 
                 script {
-                    //call version increment script
+                    //call increase version script and export version to env vars
                     sh './increaseVersion.sh patch'
-                    //sh './readVersion.sh'
                     env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
-                    echo "this is the build version: ${BUILD_VERSION}"
                     env.IMAGE_NAME = "makecake/bootcamp-java-mysql:${BUILD_VERSION}"
-                    echo "this is the image name: ${IMAGE_NAME}"
                 }   
             }
         }
@@ -36,7 +33,7 @@ pipeline {
         //build
         stage('build') {
             steps {
-                echo "building and pushing to repo..."     
+                echo "building app..."     
 
                 script {
                     sh './gradlew build'

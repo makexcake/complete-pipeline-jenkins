@@ -34,3 +34,6 @@ version="version '$major.$minor.$patch'"
 
 #replace line 8 with the updated app version
 sed -i "8s/.*/$version/" build.gradle
+
+sed -n 8p build.gradle | awk '{print $2}' | xargs >> version.txt
+

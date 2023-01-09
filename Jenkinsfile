@@ -25,7 +25,7 @@ pipeline {
                     sh './increaseVersion.sh patch'
                     //sh './readVersion.sh'
                     env.BUILD_VERSION = sh './readVersion.sh'
-                    sh "echo ${BUILD_VERSION}"
+                    sh "cat version.txt"
 
                 }   
             }

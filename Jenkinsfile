@@ -57,6 +57,8 @@ pipeline {
                 
                 script {
 
+                    sh "envsubst < Dockerfile"
+                    
                     withCredentials([usernamePassword(credentialsId: 'aws-ecr', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
                         
                         sh "echo $PASSWORD | docker login -u $USER --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"

@@ -24,14 +24,14 @@ pipeline {
                     //call increase version script and export version to env vars
                     sh './increaseVersion.sh patch'
                     env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
-                    env.IMAGE_NAME = "makecake/bootcamp-java-mysql:${BUILD_VERSION}"
+                    env.IMAGE_NAME = "java-mysql-app:${BUILD_VERSION}"
                 }   
             }
         }
         
 
         //build
-        stage('build') {
+        stage('build app') {
             steps {
                 echo "building app..."     
 
@@ -49,10 +49,22 @@ pipeline {
             }
         }
 
+
         //build image and push to repo
-        stage('push') {
+        stage('build image') {
             steps {
                 echo "pushing to ecr"
+                
+                script {
+
+                    withCredentials([usernamePassword(credentialsId: 'aws-ecr', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
+                        
+                        sh "echo $PASSWORD | docker login -u $USER --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
+                        sh "docker build -t java-mysql-app ."
+                        sh "docker tag java-mysql-app:${BUILD_VERSION} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:${BUILD_VERSION}"
+                        sh "docker push 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:${BUILD_VERSION}"
+                    }
+                }
             }
         }
 

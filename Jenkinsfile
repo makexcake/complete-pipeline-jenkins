@@ -57,7 +57,7 @@ pipeline {
                 
                 script {
 
-                    sh "envsubst < test/junk > Dockerfile"
+                    //sh "envsubst < test/junk > Dockerfile"
                     
                     withCredentials([usernamePassword(credentialsId: 'aws-ecr', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
                         

@@ -4,8 +4,8 @@ EXPOSE 8080
 
 RUN mkdir /opt/app
 
-COPY build/libs/bootcamp-java-mysql-project-$BUILD_VERSION.jar /opt/app
+COPY build/libs/bootcamp-java-mysql-project-1.0.1.jar /opt/app
 
 WORKDIR /opt/app
 
-CMD ["java", "-jar", "bootcamp-java-mysql-project-$BUILD_VERSION.jar"]
+CMD ["java", "-jar", "bootcamp-java-mysql-project-1.0.1.jar"]

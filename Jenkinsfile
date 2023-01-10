@@ -62,7 +62,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'aws-ecr', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
                         
                         sh "echo $PASSWORD | docker login -u $USER --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
-                        sh "docker build -t java-mysql-app ."
+                        sh "docker build -t java-mysql-app . "
                         sh "docker tag java-mysql-app:${BUILD_VERSION} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:${BUILD_VERSION}"
                         sh "docker push 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:${BUILD_VERSION}"
                     }

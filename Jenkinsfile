@@ -57,7 +57,7 @@ pipeline {
                 
                 script {
 
-                    //sh "envsubst < test/junk > Dockerfile"
+                    sh "envsubst < test/junk > Dockerfile"
                     sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
                     sh "docker build -t ${IMAGE_NAME} . "
                     sh "docker tag ${IMAGE_NAME} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"

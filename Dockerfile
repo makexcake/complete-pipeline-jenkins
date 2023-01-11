@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-ARG appver 
+ARG appver=0.0.0 
 
 EXPOSE 8080
 

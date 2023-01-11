@@ -60,7 +60,7 @@ pipeline {
                     //sh "envsubst < test/junk > Dockerfile"
                     sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
                     sh "docker build -t java-mysql-app . "
-                    sh "docker tag java-mysql-app:${BUILD_VERSION} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:1.0.2"
+                    sh "docker tag java-mysql-app:1.0.2 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:1.0.2"
                     sh "docker push 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:1.0.2"
                 }
             }

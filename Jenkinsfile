@@ -60,7 +60,8 @@ pipeline {
                     
                     sh "cat Dockerfile"
                     sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
-                    sh "docker build --build-arg appver=${BUILD_VERSION} -t ${IMAGE_NAME} . "
+                    //docker build -t nodejs-server  --build-arg UBUNTU_VERSION=18.04 --build-arg CUDA_VERSION=10.0
+                    sh "docker build -t ${IMAGE_NAME} --build-arg appver=${BUILD_VERSION} . "
                     sh "docker tag ${IMAGE_NAME} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
                     sh "docker push 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
                 }

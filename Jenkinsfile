@@ -24,6 +24,7 @@ pipeline {
                     //call increase version script and export version to env vars
                     sh './increaseVersion.sh patch'
                     env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
+                    env.BUILD_VERSION = '''${BUILD_VERSION}'''
                     env.IMAGE_NAME = '''java-mysql-app:${BUILD_VERSION}'''
                 }   
             }

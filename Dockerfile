@@ -1,11 +1,13 @@
 FROM openjdk:8-jdk-alpine
 
+ARG appver 
+
 EXPOSE 8080
 
 RUN mkdir /opt/app
 
-COPY build/libs/bootcamp-java-mysql-project-1.0.2.jar /opt/app
+COPY build/libs/bootcamp-java-mysql-project-$appver.jar /opt/app
 
 WORKDIR /opt/app
 
-CMD ["java", "-jar", "bootcamp-java-mysql-project-1.0.2.jar"]
+CMD ["java", "-jar", "bootcamp-java-mysql-project-$BUILD_VERSION"]

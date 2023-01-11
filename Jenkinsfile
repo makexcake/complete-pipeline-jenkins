@@ -28,7 +28,8 @@ pipeline {
                 }   
             }
         }
-        
+
+
 
         //build
         stage('build app') {
@@ -70,6 +71,25 @@ pipeline {
         stage('commit') {
             steps {
                 echo "comitting to git..."
+
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'github-tok', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        
+                        //NOTE: add ignore commiter strategy plugin to avoid build and push loops
+                        sh 'git config --global user.name "jenkins"'
+                        sh 'git config --global user.email "jenkins@example.com"'
+
+                        sh 'git status'
+                        sh 'git branch'
+                        sh 'git config --list'
+                        
+                        //NOTE: use auth token instead of password
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/makexcake/java-mysql-pipeline.git"
+                        sh "git add ."
+                        sh 'git commit -m "auto version bump"'
+                        sh 'git push origin HEAD:main'
+                    }
+                }
                 
             }
         }

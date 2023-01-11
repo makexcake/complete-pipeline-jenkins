@@ -10,4 +10,4 @@ COPY build/libs/bootcamp-java-mysql-project-$appver.jar /opt/app
 
 WORKDIR /opt/app
 
-CMD ["java", "-jar", "bootcamp-java-mysql-project-$BUILD_VERSION"]
+CMD ["java", "-jar", "bootcamp-java-mysql-project-$appver.jar"]

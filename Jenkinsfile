@@ -1,5 +1,11 @@
 pipeline {
 
+    /*
+         the pipeline uses the following apps installed on jenkins machine to word
+        awscli
+        helm
+        kubectl
+    */
     agent any
 
     environment {
@@ -21,6 +27,7 @@ pipeline {
                 echo "increasing version..."
 
                 script {
+                    //change app version in build.gradle file
                     //call increase version script and export version to env vars
                     sh './increaseVersion.sh patch'
                     env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
@@ -36,6 +43,7 @@ pipeline {
             steps {
                 echo "building app..."     
 
+                //build app according to instructions
                 script {
                     sh './gradlew build'
                 }               
@@ -58,7 +66,6 @@ pipeline {
                 
                 script {
                     sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
-                    //docker build -t nodejs-server  --build-arg UBUNTU_VERSION=18.04 --build-arg CUDA_VERSION=10.0
                     sh "docker build -t ${IMAGE_NAME} . --build-arg appver=${BUILD_VERSION}"
                     sh "docker tag ${IMAGE_NAME} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
                     sh "docker push 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
@@ -99,9 +106,10 @@ pipeline {
                 echo "deploying on EKS..."
 
                 script {
-
+                    //set app version in helm chart
                     sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values/my-java-app-values.yaml"
 
+                    //deploy app with app helm chart
                     dir ('helm') {
                         sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'
                     }                    

@@ -1,3 +1,0 @@
-#namespaceOverride: fargate
-ingress:
-  enabled: true

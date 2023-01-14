@@ -5,7 +5,7 @@
 
 update=$1 #which version to upgrade
 
-cd ..
+cd ./..
 
 #extract the major, minor and patch version from build.gradle
 major=$(sed -n 8p build.gradle | awk '{print $2}' | xargs | cut -d . -f 1)

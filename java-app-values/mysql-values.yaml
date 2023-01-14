@@ -1,0 +1,11 @@
+architecture: replication
+
+global:
+  storageClass: gp2
+
+auth:
+  rootPassword: rootpass
+  replicationPassword: replicationpass
+
+secondary:
+  replicaCount: 2

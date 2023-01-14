@@ -1,0 +1,35 @@
+# Default values for my-java-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+
+appName: my-java-app
+nameSpace: default
+replicaCount: 1
+appImage: makecake/bootcamp-java-mysql
+appVersion: 1.1
+containerPort: 8080
+mysqlReleaseName: release-name-mysql
+containerEnvVars: 
+  - name: DB_USER
+    value: "root"
+  - name: DB_SERVER
+    value: "mysql-primary"
+  - name: DB_NAME
+    value: "my_database"
+
+
+
+service:
+  serviceType: "ClusterIP"
+  servicePort: 8080
+
+
+ingress:
+    host: my-host.com
+
+secret:
+  mysqlRootPass: mysql-root-pass
+
+

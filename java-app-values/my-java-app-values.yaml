@@ -1,6 +1,6 @@
 appName: my-java-app
 replicaCount: 3
-appImage: https://536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app
+appImage: 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app:1.0.5
 appVersion: 1.0.5
 containerPort: 8080
 mysqlReleaseName: mysql

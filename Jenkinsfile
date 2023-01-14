@@ -1,9 +1,9 @@
 pipeline {
 
     agent any
-    tools {
-        //NOTE: must have node plugin installed
-        nodejs "node"
+
+    environment {
+        DOCKER_REPO = '536167534320.dkr.ecr.eu-central-1.amazonaws.com/'
     }
 
     stages {

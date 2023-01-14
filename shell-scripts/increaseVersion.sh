@@ -5,6 +5,8 @@
 
 update=$1 #which version to upgrade
 
+cd ..
+
 #extract the major, minor and patch version from build.gradle
 major=$(sed -n 8p build.gradle | awk '{print $2}' | xargs | cut -d . -f 1)
 minor=$(sed -n 8p build.gradle | awk '{print $2}' | xargs | cut -d . -f 2)
@@ -33,7 +35,6 @@ fi
 version="version '$major.$minor.$patch'"
 
 #replace line 8 with the updated app version
-cd ..
 sed -i "8s/.*/$version/" build.gradle
 
 

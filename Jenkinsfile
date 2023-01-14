@@ -93,5 +93,15 @@ pipeline {
                 
             }
         }
+
+        stage('deploy') {
+            steps {
+                echo "deploying on EKS..."
+
+                script {
+                    sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'
+                }
+            }
+        }
     } 
 }

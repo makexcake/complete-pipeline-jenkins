@@ -100,7 +100,7 @@ pipeline {
 
                 script {
 
-                    sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values.yaml"
+                    sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values/my-java-app-values.yaml"
 
                     dir ('helm') {
                         sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'

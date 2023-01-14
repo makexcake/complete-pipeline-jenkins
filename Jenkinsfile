@@ -23,7 +23,7 @@ pipeline {
                 script {
                     //call increase version script and export version to env vars
                     sh './increaseVersion.sh patch'
-                    env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
+                    env.BUILD_VERSION = sh(returnStdout: true, script: "./shell-scripts/readVersion.sh")
                     env.IMAGE_NAME = '''java-mysql-app:${BUILD_VERSION}'''
                 }   
             }
@@ -99,8 +99,12 @@ pipeline {
                 echo "deploying on EKS..."
 
                 script {
-                    sh "envsubst < java-app-values/my-java-app-values.yaml"
-                    sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'
+
+                    sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values.yaml"
+
+                    dir ('helm') {
+                        sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'
+                    }                    
                 }
             }
         }

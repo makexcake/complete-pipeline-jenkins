@@ -5,6 +5,7 @@ pipeline {
         awscli
         helm
         kubectl
+        envsubst (gettext-base)
     */
     
     agent any

@@ -1,12 +1,18 @@
 pipeline {
 
     /*
-         the pipeline uses the following apps installed on jenkins machine to word
+        the pipeline uses the following apps installed on jenkins machine to word
         awscli
         helm
         kubectl
     */
+    
     agent any
+
+    parameters {
+        booleanParam(name: 'skipDeploy', defaultValue: false, description: "true to skip")
+        booleanParam(name: 'skipCommit', defaultValue: false, description: "true to skip")
+    }
 
     environment {
         DOCKER_REPO = '536167534320.dkr.ecr.eu-central-1.amazonaws.com/'
@@ -76,6 +82,13 @@ pipeline {
 
         //commit version update in git repo
         stage('commit') {
+
+            when {
+                expression {
+                    params.skipCommit == false
+                }
+            }
+
             steps {
                 echo "comitting to git..."
 
@@ -102,6 +115,13 @@ pipeline {
         }
 
         stage('deploy') {
+
+            when {
+                expression {
+                    params.skipDeploy == false
+                }
+            }
+
             steps {
                 echo "deploying on EKS..."
 

@@ -14,7 +14,7 @@ pipeline {
     parameters {
         booleanParam(name: 'skipDeploy', defaultValue: true, description: "true to skip")
         booleanParam(name: 'skipCommit', defaultValue: true, description: "true to skip")
-        booleanParam(name: 'skipClusterProvision', defaultValue: true, description: "true to skip")
+        booleanParam(name: 'skipClusterProvision', defaultValue: false, description: "true to skip")
         booleanParam(name: 'skipClusterDestroy', defaultValue: true, description: "true to skip")
     }
 
@@ -139,8 +139,9 @@ pipeline {
 
                script {
                     dir ('terraform') {
-                        sh 'terraform init -migrate-state'
+                        sh 'terraform init'
                         sh 'terraform plan'
+                        sh 'terraform apply -auto-approve'
                     }
                }
             }           

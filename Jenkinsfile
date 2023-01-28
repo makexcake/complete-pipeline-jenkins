@@ -143,7 +143,7 @@ pipeline {
                         sh 'terraform plan'
                         sh 'terraform apply -auto-approve'
                         sh 'aws eks --region eu-central-1 update-kubeconfig --name myapp-eks-cluster'
-                        sh 'eksctl get node'
+                        sh 'kubectl get node'
                     }
                }
             }           

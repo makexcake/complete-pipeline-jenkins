@@ -129,13 +129,20 @@ pipeline {
         //provision an infrustructure for app deployment using terraform
         stage ('provision cluster') {
             when {
-                expression [
+                expression {
                     params.skipClusterProvision == false
-                ]
+                }
             }
 
             steps {
                echo "provisioning EKS cluster" 
+
+               script {
+                    dir ('terraform') {
+                        sh 'terraform init'
+                        sh 'terraform plan'
+                    }
+               }
             }           
         }
 
@@ -152,7 +159,7 @@ pipeline {
                 echo "destroying cluster"
             }
         }
-        
+
 
         //deploy app on the EKS cluster
         stage('deploy') {

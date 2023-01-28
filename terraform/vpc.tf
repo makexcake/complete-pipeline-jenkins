@@ -1,5 +1,14 @@
 provider "aws" {}
 
+terraform {
+    required_version = ">= 0.12"
+    backend "s3" {
+        bucket = "vit-pipeline"
+        key = "myapp/state.tfstate"
+        region = "eu-central-1"
+    }
+}
+
 variable vpc_cidr_block {}
 variable private_cidr_blocks {}
 variable public_cidr_blocks{}

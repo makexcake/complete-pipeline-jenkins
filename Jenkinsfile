@@ -14,6 +14,8 @@ pipeline {
     parameters {
         booleanParam(name: 'skipDeploy', defaultValue: true, description: "true to skip")
         booleanParam(name: 'skipCommit', defaultValue: true, description: "true to skip")
+        booleanParam(name: 'skipClusterProvision', defaultValue: true, description: "true to skip")
+        booleanParam(name: 'skipClusterDestroy', defaultValue: true, description: "true to skip")
     }
 
     environment {
@@ -126,10 +128,31 @@ pipeline {
 
         //provision an infrustructure for app deployment using terraform
         stage ('provision cluster') {
+            when {
+                expression [
+                    params.skipClusterProvision == false
+                ]
+            }
+
             steps {
                echo "provisioning EKS cluster" 
             }           
         }
+
+
+        //destroy cluster if the parameter is true
+        stage ('destroy cluster') {
+            when {
+                expression {
+                    params.skipClusterDestroy == false
+                }
+            }
+
+            steps {
+                echo "destroying cluster"
+            }
+        }
+        
 
         //deploy app on the EKS cluster
         stage('deploy') {

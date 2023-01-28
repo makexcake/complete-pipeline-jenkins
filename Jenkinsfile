@@ -158,6 +158,12 @@ pipeline {
 
             steps {
                 echo "destroying cluster"
+                
+                script {
+                    dir ('terraform') {
+                        sh 'terraform destroy -auto-approve'
+                    }
+                }
             }
         }
 

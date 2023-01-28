@@ -142,6 +142,8 @@ pipeline {
                         sh 'terraform init'
                         sh 'terraform plan'
                         sh 'terraform apply -auto-approve'
+                        sh 'aws eks --region eu-central-1 update-kubeconfig --name myapp-eks-cluster'
+                        sh 'eksctl get node'
                     }
                }
             }           
@@ -181,6 +183,12 @@ pipeline {
                 echo "deploying on EKS..."
 
                 script {
+
+                    //set up kubectl
+                    
+                    //####DEPLOY MYSQL AND NGINX####
+
+                    //#### DEPLOY APP ####//
                     //set app version in helm chart using envsubst 
                     sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values/my-java-app-values.yaml"
 

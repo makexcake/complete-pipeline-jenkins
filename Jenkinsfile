@@ -6,6 +6,7 @@ pipeline {
         helm
         kubectl
         envsubst (gettext-base)
+        terraform
     */
     
     agent any
@@ -122,6 +123,15 @@ pipeline {
             }
         }
 
+
+        //provision an infrustructure for app deployment using terraform
+        stage ('provision cluster') {
+            steps {
+               echo "provisioning EKS cluster" 
+            }           
+        }
+
+        //deploy app on the EKS cluster
         stage('deploy') {
 
             when {

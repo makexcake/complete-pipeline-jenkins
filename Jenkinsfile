@@ -139,7 +139,7 @@ pipeline {
 
                script {
                     dir ('terraform') {
-                        sh 'terraform init'
+                        sh 'terraform init -migrate-state'
                         sh 'terraform plan'
                     }
                }

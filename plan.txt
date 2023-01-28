@@ -1,0 +1,18 @@
+# deploy mysql #
+    * deploy csi driver:
+        - add driver policy to ec2 nodegroup
+        - $ kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.14"
+    * deploy mysql from bitnami charts
+        - $ helm repo add bitnami https://charts.bitnami.com/bitnami
+        - $ helm install -f mysql-values my-release bitnami/mysql
+
+# deploy nginx #
+    * $ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    * $ helm repo update
+    * $ helm install nginx ingress-nginx/ingress-nginx
+
+# deploy my-java-app #
+    * update ingress host name in app-values
+    * update update app version with envsubst
+    * $ helm install -f my-java-app-values.yaml my-java-app my-java-app/
+

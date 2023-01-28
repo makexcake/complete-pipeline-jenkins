@@ -11,8 +11,8 @@ pipeline {
     agent any
 
     parameters {
-        booleanParam(name: 'skipDeploy', defaultValue: false, description: "true to skip")
-        booleanParam(name: 'skipCommit', defaultValue: false, description: "true to skip")
+        booleanParam(name: 'skipDeploy', defaultValue: true, description: "true to skip")
+        booleanParam(name: 'skipCommit', defaultValue: true, description: "true to skip")
     }
 
     environment {

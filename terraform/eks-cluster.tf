@@ -28,4 +28,17 @@ module "eks" {
   }
 }
 
+resource "aws_iam_policy" "csi-driver-policy" {
+  name        = "aws-csi-policy"
+  description = "CSI driver policy for MYSQL"
+
+  policy = file("csi-driver-pollicy.json")
+
+}
+
+resource "aws_iam_role_policy_attachment" "csi-attach" {
+  role       = module.eks.eks_managed_node_groups.role
+  policy_arn = aws_iam_policy.csi-driver-policy.arn
+}
+
 

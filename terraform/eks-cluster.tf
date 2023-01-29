@@ -32,7 +32,7 @@ resource "aws_iam_policy" "csi-driver-policy" {
   name        = "aws-csi-policy"
   description = "CSI driver policy for MYSQL"
 
-  policy = file("csi-driver-pollicy.json")
+  policy = file("./csi-driver-pollicy.json")
 
 }
 

@@ -29,6 +29,6 @@ module "eks" {
 }
 
 output "eks-ngs" {
-  value = module.eks.eks_managed_node_groups.names
+  value = module.eks.eks_managed_node_groups.name
 }
 

@@ -1,6 +1,8 @@
 # deploy mysql #
     * deploy csi driver:
-        - add driver policy to ec2 nodegroup
+        - add driver policy to cluster nodegroup
+            # get nodegroup role
+            # attach policy to role
         - $ kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.14"
     * deploy mysql from bitnami charts
         - $ helm repo add bitnami https://charts.bitnami.com/bitnami

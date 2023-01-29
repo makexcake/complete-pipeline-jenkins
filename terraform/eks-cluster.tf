@@ -26,5 +26,5 @@ module "eks" {
       instance_types = ["t2.medium"]
     }
   }
-
 }
+

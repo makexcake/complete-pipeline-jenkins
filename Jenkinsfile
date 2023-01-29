@@ -184,11 +184,11 @@ pipeline {
 
                 script {
 
-                    //set up kubectl
-                    
-                    //####DEPLOY MYSQL AND NGINX####
+                    //connect to cluster
+                    //deploy mysql and nginx
 
-                    //#### DEPLOY APP ####//
+                    
+                    //deploy my-maja-app
                     //set app version in helm chart using envsubst 
                     sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values/my-java-app-values.yaml"
 

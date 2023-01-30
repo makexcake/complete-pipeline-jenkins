@@ -37,7 +37,7 @@ resource "aws_iam_policy" "csi-driver-policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "csi-attach" {
-  role       = module.eks.module.eks_managed_node_group["dev"].aws_iam_role.this[0].name
+  role       = module.eks.eks_managed_node_group["dev"].aws_iam_role.name
   policy_arn = aws_iam_policy.csi-driver-policy.arn
 }
 

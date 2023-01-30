@@ -24,6 +24,7 @@ module "eks" {
       desired_size = 3
 
       instance_types = ["t2.medium"]
+      module.eks.module.eks_managed_node_group["dev"].data.aws_iam_policy_document.assume_role_policy[0]
     }
   }
 }
@@ -36,9 +37,9 @@ resource "aws_iam_policy" "csi-driver-policy" {
 
 }
 
-/*resource "aws_iam_role_policy_attachment" "csi-attach" {
-  role       = module.eks.eks_managed_node_groups.dev.node_role_arn
+resource "aws_iam_role_policy_attachment" "csi-attach" {
+  role       = module.eks.module.eks_managed_node_group["dev"].aws_iam_role.name
   policy_arn = aws_iam_policy.csi-driver-policy.arn
-}*/
+}
 
 

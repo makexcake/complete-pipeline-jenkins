@@ -28,6 +28,10 @@ module "eks" {
   }
 }
 
+output "list_of_engs" {
+  value = "module.eks.eks_managed_node_groups"
+}
+
 resource "aws_iam_policy" "csi-driver-policy" {
   name        = "aws-csi-policy"
   description = "CSI driver policy for MYSQL"

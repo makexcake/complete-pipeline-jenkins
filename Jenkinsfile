@@ -158,6 +158,13 @@ pipeline {
                 echo "destroying cluster"
                 
                 script {
+                    //delete deployments
+                    sh "helm delete my-java-app"
+                    sh "helm delete nginx"
+                    sh "helm delete mysql"
+                    sh '''kubectl delete -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.14"'''
+
+                    //destroy cluster
                     dir ('terraform') {
                         sh 'terraform destroy -auto-approve'
                     }

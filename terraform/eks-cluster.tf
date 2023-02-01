@@ -34,13 +34,13 @@ output "list_of_engs" {
   value = "module.eks.eks_managed_node_groups"
 }
 
-resource "aws_iam_policy" "csi-driver-policy" {
+/*resource "aws_iam_policy" "csi-driver-policy" {
   name        = "aws-csi-policy"
   description = "CSI driver policy for MYSQL"
 
   policy = file("csi-driver-policy.json")
 
-}
+}*/
 
 /*resource "aws_iam_role_policy_attachment" "csi-attach" {
   role       = ${module.eks.eks_managed_node_group["dev"].aws_iam_role.name}

@@ -200,7 +200,7 @@ pipeline {
                         sh "sleep 300"
 
                         //get LB domain to environment variable 
-                        env.LB_DOMAIN = sh(returnStdout: true, script: """kubectl get svc nginx-ingress-nginx-controller | awk '/nginx-ingress-nginx-controller/ {print $4}'""")
+                        env.LB_DOMAIN = sh(returnStdout: true, script: "./getDomain.sh")
 
                         //set app version and LB domain in helm chart using envsubst 
                         sh "envsubst < java-app-values-template.txt > helm/helm-values/my-java-app-values.yaml"

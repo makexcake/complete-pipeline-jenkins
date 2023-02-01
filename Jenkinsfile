@@ -111,7 +111,7 @@ pipeline {
                         sh 'git config --list'
                         
                         //NOTE: use auth token instead of password
-                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/makexcake/java-mysql-pipeline.git"
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/makexcake/twn-full-pipeline.git"
                         sh "git add ."
                         sh 'git commit -m "auto version bump"'
                         sh 'git push origin HEAD:main'

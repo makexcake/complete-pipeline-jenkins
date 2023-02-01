@@ -14,5 +14,6 @@
 # deploy my-java-app #
     * update ingress host name in app-values
     * update update app version with envsubst
+        - $ kubectl get svc nginx-ingress-nginx-controller | awk '/nginx-ingress-nginx-controller/ {print $4}'
     * $ helm install -f my-java-app-values.yaml my-java-app my-java-app/
 

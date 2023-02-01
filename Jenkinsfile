@@ -18,9 +18,6 @@ pipeline {
         booleanParam(name: 'skipClusterDestroy', defaultValue: true, description: "true to skip")
     }
 
-    environment {
-        DOCKER_REPO = '536167534320.dkr.ecr.eu-central-1.amazonaws.com/'
-    }
 
     stages {
 
@@ -47,7 +44,6 @@ pipeline {
                 }   
             }
         }
-
 
 
         //build
@@ -199,21 +195,18 @@ pipeline {
                         //deploy nginx
                         sh "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
                         sh "helm install nginx ingress-nginx/ingress-nginx"
-                    }
-                    
-                    
 
-                    
-                    /*
-                    //deploy my-java-app
-                    //set app version in helm chart using envsubst 
-                    sh "envsubst < templates/java-app-values-template.txt > helm/helm-values/my-java-app-values.yaml"
+                        //wait for mysql and nginx to deploy 
+                        sh "sleep 300"
 
-                    //deploy app with app helm chart
-                    dir ('helm') {
-                        sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'
-                    }  
-                    */                  
+                        //get LB domain to environment variable 
+                        env.LB_DOMAIN = sh(returnStdout: true, script: "kubectl get svc nginx-ingress-nginx-controller | awk '/nginx-ingress-nginx-controller/ {print $4}'")
+
+                        //set app version and LB domain in helm chart using envsubst 
+                        sh "envsubst < java-app-values-template.txt > helm/helm-values/my-java-app-values.yaml"
+                        //deploy my-java-app
+                        sh 'helm install -f helm-values/my-java-app-values.yaml my-java-app my-java-app/'
+                    }                                     
                 }
             }
         }

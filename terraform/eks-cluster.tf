@@ -30,7 +30,7 @@ module "eks" {
 
 
 
-output "list_of_engs" {
+output "ng_role_name" {
   value = module.eks.eks_managed_node_groups["dev"].iam_role_name
 }
 
@@ -42,9 +42,11 @@ output "list_of_engs" {
 
 }*/
 
-/*resource "aws_iam_role_policy_attachment" "csi-attach" {
-  role       = ${module.eks.eks_managed_node_group["dev"].aws_iam_role.name}
+resource "aws_iam_role_policy_attachment" "csi-attach" {
+  role       = module.eks.eks_managed_node_groups["dev"].iam_role_name
   policy_arn = aws_iam_policy.csi-driver-policy.arn
-}*/
+}
+
+
 
 

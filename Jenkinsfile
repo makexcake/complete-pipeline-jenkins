@@ -203,7 +203,7 @@ pipeline {
                         env.LB_DOMAIN = sh(returnStdout: true, script: "./getDomain.sh")
 
                         //set app version and LB domain in helm chart using envsubst 
-                        sh "envsubst < java-app-values-template.txt > helm/helm-values/my-java-app-values.yaml"
+                        sh "envsubst < java-app-values-template.txt > helm-values/my-java-app-values.yaml"
                         //deploy my-java-app
                         sh 'helm install -f helm-values/my-java-app-values.yaml my-java-app my-java-app/'
                     }                                     

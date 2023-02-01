@@ -28,8 +28,10 @@ module "eks" {
   }
 }
 
+
+
 output "list_of_engs" {
-  value = "module.eks.eks_managed_node_groups"
+  value = "module.eks.eks_managed_node_groups["0"]"
 }
 
 resource "aws_iam_policy" "csi-driver-policy" {
@@ -40,9 +42,9 @@ resource "aws_iam_policy" "csi-driver-policy" {
 
 }
 
-resource "aws_iam_role_policy_attachment" "csi-attach" {
+/*resource "aws_iam_role_policy_attachment" "csi-attach" {
   role       = ${module.eks.eks_managed_node_group["dev"].aws_iam_role.name}
   policy_arn = aws_iam_policy.csi-driver-policy.arn
-}
+}*/
 
 

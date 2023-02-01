@@ -185,17 +185,35 @@ pipeline {
                 script {
 
                     //connect to cluster
-                    //deploy mysql and nginx
+                    sh "aws eks --region eu-central-1 update-kubeconfig --name myapp-eks-cluster"
+
+                    //deploy csi driver mysql and nginx
+                    sh '''kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.14"'''
 
                     
-                    //deploy my-maja-app
+                    dir ('helm') {
+                        //deploy mysql
+                        sh "helm repo add bitnami https://charts.bitnami.com/bitnami"
+                        sh "helm install -f helm-values/mysql-values.yaml mysql bitnami/mysql"
+
+                        //deploy nginx
+                        sh "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
+                        sh "helm install nginx ingress-nginx/ingress-nginx"
+                    }
+                    
+                    
+
+                    
+                    /*
+                    //deploy my-java-app
                     //set app version in helm chart using envsubst 
-                    sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values/my-java-app-values.yaml"
+                    sh "envsubst < templates/java-app-values-template.txt > helm/helm-values/my-java-app-values.yaml"
 
                     //deploy app with app helm chart
                     dir ('helm') {
                         sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'
-                    }                    
+                    }  
+                    */                  
                 }
             }
         }

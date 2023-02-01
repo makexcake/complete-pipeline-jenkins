@@ -29,18 +29,10 @@ module "eks" {
 }
 
 
-
 output "ng_role_name" {
   value = module.eks.eks_managed_node_groups["dev"].iam_role_name
 }
 
-/*resource "aws_iam_policy" "csi-driver-policy" {
-  name        = "aws-csi-policy"
-  description = "CSI driver policy for MYSQL"
-
-  policy = file("csi-driver-policy.json")
-
-}*/
 
 resource "aws_iam_role_policy_attachment" "csi-attach" {
   role       = module.eks.eks_managed_node_groups["dev"].iam_role_name

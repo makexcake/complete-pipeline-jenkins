@@ -8,6 +8,8 @@ The following repo is a demo project written by @makexcake while completing Tech
 
 * Main branch contains the lastest working version.
 
+* With every chapter more tools and stages will be added. 
+
 ## Preparations
 
 The following tools are reqired to be installed and configured on Jenkins server:
@@ -20,4 +22,4 @@ The following tools are reqired to be installed and configured on Jenkins server
 
 ## Contributing
 
-Tweaks and tricks and comments will be gladly appriciated.
+Tweaks,tricks comments and suggestions will be gladly appriciated.

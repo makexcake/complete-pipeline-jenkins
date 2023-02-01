@@ -6,6 +6,7 @@ pipeline {
         helm
         kubectl
         envsubst (gettext-base)
+        terraform
     */
     
     agent any
@@ -13,11 +14,10 @@ pipeline {
     parameters {
         booleanParam(name: 'skipDeploy', defaultValue: true, description: "true to skip")
         booleanParam(name: 'skipCommit', defaultValue: true, description: "true to skip")
+        booleanParam(name: 'skipClusterProvision', defaultValue: true, description: "true to skip")
+        booleanParam(name: 'skipClusterDestroy', defaultValue: true, description: "true to skip")
     }
 
-    environment {
-        DOCKER_REPO = '536167534320.dkr.ecr.eu-central-1.amazonaws.com/'
-    }
 
     stages {
 
@@ -34,25 +34,28 @@ pipeline {
                 echo "increasing version..."
 
                 script {
-                    //change app version in build.gradle file
-                    //call increase version script and export version to env vars
-                    sh './increaseVersion.sh patch'
-                    env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
-                    env.IMAGE_NAME = '''java-mysql-app:${BUILD_VERSION}'''
+                    dir ('app') {
+                        //change app version in build.gradle file
+                        //call increase version script and export version to env vars
+                        sh './increaseVersion.sh patch'
+                        env.BUILD_VERSION = sh(returnStdout: true, script: "./readVersion.sh")
+                        env.IMAGE_NAME = '''java-mysql-app:${BUILD_VERSION}'''                       
+                    }
                 }   
             }
         }
-
 
 
         //build
         stage('build app') {
             steps {
                 echo "building app..."     
-
+                
                 //build app according to instructions
                 script {
-                    sh './gradlew build'
+                    dir ('app') {
+                        sh './gradlew build'   
+                    }                   
                 }               
             }
         }
@@ -72,10 +75,13 @@ pipeline {
                 echo "pushing to ecr"
                 
                 script {
-                    sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
-                    sh "docker build -t ${IMAGE_NAME} . --build-arg appver=${BUILD_VERSION}"
-                    sh "docker tag ${IMAGE_NAME} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
-                    sh "docker push 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
+
+                    dir ('app') {
+                        sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 536167534320.dkr.ecr.eu-central-1.amazonaws.com"
+                        sh "docker build -t ${IMAGE_NAME} . --build-arg appver=${BUILD_VERSION}"
+                        sh "docker tag ${IMAGE_NAME} 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"
+                        sh "docker push 536167534320.dkr.ecr.eu-central-1.amazonaws.com/${IMAGE_NAME}"                       
+                    }
                 }
             }
         }
@@ -115,6 +121,52 @@ pipeline {
             }
         }
 
+
+        //provision an infrustructure for app deployment using terraform
+        stage ('provision cluster') {
+            when {
+                expression {
+                    params.skipClusterProvision == false
+                }
+            }
+
+            steps {
+               echo "provisioning EKS cluster" 
+
+               script {
+                    dir ('terraform') {
+                        sh 'terraform init'
+                        sh 'terraform plan'
+                        sh 'terraform apply -auto-approve'
+                        sh 'aws eks --region eu-central-1 update-kubeconfig --name myapp-eks-cluster'
+                        sh 'kubectl get node'
+                    }
+               }
+            }           
+        }
+
+
+        //destroy cluster if the parameter is true
+        stage ('destroy cluster') {
+            when {
+                expression {
+                    params.skipClusterDestroy == false
+                }
+            }
+
+            steps {
+                echo "destroying cluster"
+                
+                script {
+                    dir ('terraform') {
+                        sh 'terraform destroy -auto-approve'
+                    }
+                }
+            }
+        }
+
+
+        //deploy app on the EKS cluster
         stage('deploy') {
 
             when {
@@ -127,13 +179,34 @@ pipeline {
                 echo "deploying on EKS..."
 
                 script {
-                    //set app version in helm chart
-                    sh "envsubst < templates/java-app-values-template.txt > helm/java-app-values/my-java-app-values.yaml"
 
-                    //deploy app with app helm chart
+                    //connect to cluster
+                    sh "aws eks --region eu-central-1 update-kubeconfig --name myapp-eks-cluster"
+
+                    //deploy csi driver mysql and nginx
+                    sh '''kubectl apply -k "github.com/kubernetes-sigs/aws-ebs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.14"'''
+
+                    
                     dir ('helm') {
-                        sh 'helm install -f java-app-values/my-java-app-values.yaml my-java-app my-java-app/'
-                    }                    
+                        //deploy mysql
+                        sh "helm repo add bitnami https://charts.bitnami.com/bitnami"
+                        sh "helm install -f helm-values/mysql-values.yaml mysql bitnami/mysql"
+
+                        //deploy nginx
+                        sh "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
+                        sh "helm install nginx ingress-nginx/ingress-nginx"
+
+                        //wait for mysql and nginx to deploy 
+                        sh "sleep 300"
+
+                        //get LB domain to environment variable 
+                        env.LB_DOMAIN = sh(returnStdout: true, script: "./getDomain.sh")
+
+                        //set app version and LB domain in helm chart using envsubst 
+                        sh "envsubst < java-app-values-template.txt > helm-values/my-java-app-values.yaml"
+                        //deploy my-java-app
+                        sh 'helm install -f helm-values/my-java-app-values.yaml my-java-app my-java-app/'
+                    }                                     
                 }
             }
         }

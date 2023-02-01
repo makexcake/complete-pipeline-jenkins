@@ -1,8 +1,7 @@
 appName: my-java-app
 replicaCount: 3
 appImage: 536167534320.dkr.ecr.eu-central-1.amazonaws.com/java-mysql-app
-appVersion: 1.0.13
-
+appVersion: $BUILD_VERSION
 containerPort: 8080
 mysqlReleaseName: mysql
 
@@ -14,4 +13,4 @@ service:
   servicePort: 8080
 
 ingress:
-    host: ac8554aca8ebc49b1beb50b93bf30c34-150177038.eu-central-1.elb.amazonaws.com
+    host: $LB_DOMAIN

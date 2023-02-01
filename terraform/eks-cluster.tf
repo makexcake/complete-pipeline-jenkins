@@ -44,7 +44,7 @@ output "ng_role_name" {
 
 resource "aws_iam_role_policy_attachment" "csi-attach" {
   role       = module.eks.eks_managed_node_groups["dev"].iam_role_name
-  policy_arn = aws_iam_policy.csi-driver-policy.arn
+  policy_arn = arn:aws:iam::536167534320:policy/aws-csi-policy
 }
 
 

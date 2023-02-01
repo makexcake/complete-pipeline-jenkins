@@ -31,7 +31,7 @@ module "eks" {
 
 
 output "list_of_engs" {
-  value = module.eks.eks_managed_node_groups["dev"]
+  value = module.eks.eks_managed_node_groups["dev"].iam_role_name
 }
 
 /*resource "aws_iam_policy" "csi-driver-policy" {

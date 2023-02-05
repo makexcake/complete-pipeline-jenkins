@@ -1,7 +1,7 @@
 pipeline {
 
     /*
-        the pipeline uses the following apps installed on jenkins machine to word
+        the pipeline uses the following apps installed on jenkins machine 
         awscli
         helm
         kubectl

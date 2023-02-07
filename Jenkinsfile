@@ -166,6 +166,7 @@ pipeline {
 
                     //destroy cluster
                     dir ('terraform') {
+                        sh 'terraform init
                         sh 'terraform destroy -auto-approve'
                     }
                 }

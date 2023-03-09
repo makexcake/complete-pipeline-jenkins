@@ -4,8 +4,6 @@ The following repo is a demo project written by @makexcake while completing Tech
 
 * java-mysql web app was provided by the course.
 
-* In every chapter of the course more stages were added to the pipeline.
-
 * Main branch contains the lastest working version.
 
 * With every chapter more tools and stages will be added. 

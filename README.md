@@ -1,4 +1,4 @@
-# Full demo pipeline 
+# Complete demo pipeline 
 
 The following repo is a demo project written by @makexcake while completing Tech World With Nana DevOps bootcamp exercises.
 
